@@ -1,0 +1,30 @@
+{
+  "name": "red-big-decimals",
+  "version": "0.0.1",
+  "description": "leverage BigInt primitive wrapper object to handle handle arbitrary precision floating point numbers in Javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/basti-n/red-big-decimals.git"
+  },
+  "keywords": [
+    "bigint",
+    "javascript",
+    "numbers",
+    "floating-point"
+  ],
+  "author": "sebastian neumair",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/basti-n/red-big-decimals/issues"
+  },
+  "homepage": "https://github.com/basti-n/red-big-decimals#readme",
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "typescript": "^4.8.2"
+  }
+}
