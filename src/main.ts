@@ -1,24 +1,32 @@
-import { ROUNDED, DECIMALS, SHIFT } from "./config";
+import { defaultConfig } from "./core/config";
+import { SHIFT } from "./core/constants";
+import { bigIntToNumber, bigIntToString, parseToBigInt } from "./core/helpers";
+import { BigDecimalConfig } from "./types/big-decimal-config";
 
 export class BigDecimal {
   #number: bigint;
+  #config: BigDecimalConfig;
 
-  constructor(value: string | number | bigint | BigDecimal) {
-    if (value instanceof BigDecimal) return value;
+  constructor(
+    value: string | number | bigint | BigDecimal,
+    config?: BigDecimalConfig
+  ) {
+    if (value instanceof BigDecimal) {
+      value.#config = { ...defaultConfig, ...(config ?? {}) };
+      return value;
+    }
 
+    this.#config = { ...defaultConfig, ...(config ?? {}) };
     if (typeof value === "bigint") {
       this.#number = value;
     } else {
-      let [ints, decis] = String(value).split(".").concat("");
-      this.#number =
-        BigInt(ints + decis.padEnd(DECIMALS, "0").slice(0, DECIMALS)) +
-        BigInt(ROUNDED && decis[DECIMALS] >= "5");
+      this.#number = parseToBigInt(value, this.#config);
     }
   }
 
-  private static _divRound(dividend: bigint, divisor: bigint) {
+  private static divide(numerator: bigint, denominator: bigint): BigDecimal {
     return BigDecimal.fromBigInt(
-      dividend / divisor + (ROUNDED ? ((dividend * 2n) / divisor) % 2n : 0n)
+      numerator / denominator + (((numerator * 2n) / denominator) % 2n)
     );
   }
 
@@ -26,43 +34,27 @@ export class BigDecimal {
     return new BigDecimal(bigint);
   }
 
-  add(num: number) {
+  add(num: number): BigDecimal {
     return BigDecimal.fromBigInt(this.#number + new BigDecimal(num).#number);
   }
 
-  subtract(num: number) {
+  subtract(num: number): BigDecimal {
     return BigDecimal.fromBigInt(this.#number - new BigDecimal(num).#number);
   }
 
-  multiply(num: number) {
-    return BigDecimal._divRound(
-      this.#number * new BigDecimal(num).#number,
-      SHIFT
-    );
+  multiply(num: number): BigDecimal {
+    return BigDecimal.divide(this.#number * new BigDecimal(num).#number, SHIFT);
   }
 
-  divide(num: number) {
-    return BigDecimal._divRound(
-      this.#number * SHIFT,
-      new BigDecimal(num).#number
-    );
+  divide(num: number): BigDecimal {
+    return BigDecimal.divide(this.#number * SHIFT, new BigDecimal(num).#number);
   }
 
-  toString() {
-    const s = this.#number.toString().padStart(DECIMALS + 1, "0");
-    return (
-      s.slice(0, -DECIMALS) + "." + s.slice(-DECIMALS).replace(/\.?0+$/, "")
-    );
+  toString(): string {
+    return bigIntToString(this.#number, this.#config);
   }
 
-  toNumber(numberOfDecimals = 10): number {
-    return (
-      Math.round(parseFloat(this.toString()) * 10 ** numberOfDecimals) /
-      10 ** numberOfDecimals
-    );
+  toNumber(): number {
+    return bigIntToNumber(this.#number, this.#config);
   }
 }
-
-const a = new BigDecimal(0.3);
-const result = a.subtract(0.1).toString();
-console.log({ result });

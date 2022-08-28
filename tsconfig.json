@@ -1,5 +1,5 @@
 {
-  "include": ["src/*.ts"],
+  "include": ["src/*.ts", "src/core/helpers.ts", "src/core/constants.ts", "src/core/config.ts"],
   "compilerOptions": {
     "noImplicitAny": true,
     "target": "esnext",
