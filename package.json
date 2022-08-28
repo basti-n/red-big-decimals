@@ -1,6 +1,6 @@
 {
   "name": "red-big-decimals",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "leverage BigInt primitive wrapper object to handle handle arbitrary precision floating point numbers in Javascript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
