@@ -1,6 +1,6 @@
 import { ROUNDED, DECIMALS, SHIFT } from "./config";
 
-class BigDecimal {
+export class BigDecimal {
   #number: bigint;
 
   constructor(value: string | number | bigint | BigDecimal) {

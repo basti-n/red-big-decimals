@@ -3,6 +3,8 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "target": "esnext",
-    "module": "commonjs"
+    "module": "ESNext",
+    "declaration": true,
+    "outDir": "./dist"
   }
 }
