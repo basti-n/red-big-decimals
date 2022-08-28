@@ -1,10 +1,13 @@
 {
-  "include": ["src/*.ts", "src/core/helpers.ts", "src/core/constants.ts", "src/core/config.ts"],
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"],
   "compilerOptions": {
     "noImplicitAny": true,
     "target": "esnext",
     "module": "ESNext",
+    "moduleResolution": "node",
     "declaration": true,
+    "esModuleInterop": true,
     "outDir": "./dist"
   }
 }

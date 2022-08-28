@@ -1,7 +1,11 @@
-import { defaultConfig } from "./core/config";
-import { SHIFT } from "./core/constants";
-import { bigIntToNumber, bigIntToString, parseToBigInt } from "./core/helpers";
-import { BigDecimalConfig } from "./types/big-decimal-config";
+import { defaultConfig } from './core/config';
+import { SHIFT } from './core/constants';
+import {
+  bigIntToNumber,
+  bigIntToString,
+  parseToFloatingPointBigInt,
+} from './core/helpers';
+import { BigDecimalConfig } from './types/big-decimal-config';
 
 export class BigDecimal {
   #number: bigint;
@@ -17,10 +21,10 @@ export class BigDecimal {
     }
 
     this.#config = { ...defaultConfig, ...(config ?? {}) };
-    if (typeof value === "bigint") {
+    if (typeof value === 'bigint') {
       this.#number = value;
     } else {
-      this.#number = parseToBigInt(value, this.#config);
+      this.#number = parseToFloatingPointBigInt(value, this.#config);
     }
   }
 
@@ -50,11 +54,11 @@ export class BigDecimal {
     return BigDecimal.divide(this.#number * SHIFT, new BigDecimal(num).#number);
   }
 
-  toString(): string {
-    return bigIntToString(this.#number, this.#config);
+  toString(roundTo = 2): string {
+    return bigIntToString(this.#number, roundTo, this.#config);
   }
 
-  toNumber(): number {
-    return bigIntToNumber(this.#number, this.#config);
+  toNumber(roundTo = 2): number {
+    return bigIntToNumber(this.#number, roundTo, this.#config);
   }
 }
